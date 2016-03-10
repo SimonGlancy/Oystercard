@@ -5,7 +5,6 @@ describe Oystercard do
   default_balance = Oystercard::DEFAULT_BALANCE
   max_balance = Oystercard::MAX_BALANCE
   min_balance = Oystercard::MIN_BALANCE
-  min_fare = Oystercard::MIN_FARE
 
   subject(:card) { described_class.new }
   let(:entry_station) { double(:station) }
@@ -48,9 +47,6 @@ describe Oystercard do
     end
     it '4.2 updates an exit station' do
       expect(card.journey_log_class.journeys[-1].exit_station).to eq(exit_station)
-    end
-    it '4.3 deducts minimum fare' do
-      expect(card.balance).to eq 10 - min_fare
     end
   end
 end
