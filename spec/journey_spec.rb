@@ -8,9 +8,9 @@ describe Journey do
   subject(:journey) { described_class.new }
   let(:entry_station) { double(:station) }
   let(:exit_station) { double(:station) }
-  let(:valid_log) { {entry: entry_station, exit: exit_station} }
-  let(:no_entry_log) { {exit: exit_station} }
-  let(:no_exit_log) { {entry: entry_station}}
+  # let(:valid_log) { {entry: entry_station, exit: exit_station} }
+  # let(:no_entry_log) { {exit: exit_station} }
+  # let(:no_exit_log) { {entry: entry_station}}
 
   describe '#iniialize' do
     it 'initializes with log = {}' do
@@ -37,6 +37,10 @@ describe Journey do
       journey.start(entry_station)
       journey.finish(exit_station)
       expect(journey.fare).to eq min_fare
+    end
+    it 'returns a penalty fare for invalid touch-in' do
+      journey.finish(exit_station)
+      expect(journey.fare).to eq penalty_fare
     end
     it 'returns a penalty fare for invalid touch-out' do
       journey.finish(exit_station)
