@@ -2,7 +2,7 @@ require_relative 'journey'
 
 class JourneyLog
 
-attr_reader :journeys
+attr_reader
 
   def initialize( journey_class: Journey )
     @journey_class = journey_class
@@ -19,7 +19,11 @@ attr_reader :journeys
   end
 
   def access_journeys
-    @journeys.dup[-1]
+    journeys[-1]
+  end
+
+  def journeys
+    @journeys.dup
   end
 
   private

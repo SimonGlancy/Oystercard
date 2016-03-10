@@ -10,7 +10,6 @@ p station2
 
 log = JourneyLog.new
 
-
 log.entry(station1)
 log.exit(station2)
 p log.journeys
