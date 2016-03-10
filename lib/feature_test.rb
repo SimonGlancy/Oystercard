@@ -1,5 +1,6 @@
 require_relative 'journey'
 require_relative 'oystercard'
+require_relative 'journey_log'
 
 station1 = Station.new('holborn')
 station2 = Station.new('algate')
@@ -7,17 +8,11 @@ station2 = Station.new('algate')
 p station1
 p station2
 
-journey = Journey.new
-p journey.fare
-journey.start(station1)
-p journey.complete?
-p journey.fare
-journey.finish(station2)
-p journey.fare
+log = JourneyLog.new
 
-p journey.complete?
 
-card = Oystercard.new
-card.top_up 10
-card.touch_in'holborn'
-p card
+log.entry(station1)
+log.exit(station2)
+p log.journeys
+p log.journeys.length
+p log.journeys[-1].complete?

@@ -9,12 +9,11 @@ class Oystercard
   MESSAGE1 = "Balance cannot exceed £#{MAX_BALANCE}"
   MESSAGE2 = "Need at least £#{MIN_BALANCE} to touch in"
 
-  attr_reader :balance, :journeys
+  attr_reader :balance, :journey_log_class
 
-  def initialize(journey_class: Journey)
-    @journey_class = journey_class
+  def initialize(journey_log_class: JourneyLog.new)
+    @journey_log_class = journey_log_class
     @balance = DEFAULT_BALANCE
-    @journeys = []
   end
 
   def top_up(amount)
@@ -24,14 +23,12 @@ class Oystercard
 
   def touch_in(station)
     raise MESSAGE2 if balance < MIN_BALANCE
-    @journeys << @journey_class.new
-    @journeys[-1].start(station)
+    @journey_log_class.entry(station)
   end
 
   def touch_out(station)
-    @exit_station = station
-    @journeys[-1].finish(station)
-    deduct(@journeys[-1].fare)
+    @journey_log_class.exit(station)
+    deduct(@journey_log_class.access_journeys.fare)
   end
 
   private
