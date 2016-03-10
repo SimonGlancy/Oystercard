@@ -1,6 +1,7 @@
 require 'station'
 
 describe Station do
+  
   list = Station::LIST
 
   describe '#initialize' do

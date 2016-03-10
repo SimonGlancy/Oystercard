@@ -1,15 +1,16 @@
 require 'oystercard'
 
 describe Oystercard do
+
   default_balance = Oystercard::DEFAULT_BALANCE
   max_balance = Oystercard::MAX_BALANCE
   min_balance = Oystercard::MIN_BALANCE
   min_fare = Oystercard::MIN_FARE
 
-subject(:card) { described_class.new }
-let(:entry_station) { double(:station) }
-let(:exit_station) { double(:station) }
-let(:journey) { {entry: entry_station, exit: exit_station} }
+  subject(:card) { described_class.new }
+  let(:entry_station) { double(:station) }
+  let(:exit_station) { double(:station) }
+  let(:journey) { {entry: entry_station, exit: exit_station} }
 
   describe '#initialize' do
     it 'initializes with a default balance' do
@@ -45,7 +46,7 @@ let(:journey) { {entry: entry_station, exit: exit_station} }
       it 'changes in_journey to false' do
         expect(card.in_journey?).to eq(true)
       end
-      it 'records entry_station' do
+      it 'remembers entry_station' do
         expect(card.journeys[-1][:entry]).to eq entry_station
       end
     end
