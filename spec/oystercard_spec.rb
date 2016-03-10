@@ -10,7 +10,7 @@ describe Oystercard do
   subject(:card) { described_class.new }
   let(:entry_station) { double(:station) }
   let(:exit_station) { double(:station) }
-  let(:journey) { {entry: entry_station, exit: exit_station} }
+  let(:journey) { double(:journey) }
 
   describe '#initialize' do
     it '1.0 initializes with a default balance' do
@@ -41,16 +41,10 @@ describe Oystercard do
     context '3.1 when card is in_journey' do
       before(:each) do
         card.top_up(10)
+      end
+      it '3.2 creates a new journey with a right station' do
         card.touch_in(entry_station)
-      end
-      it '3.2 changes in_journey to false' do
-        expect(card.in_journey?).to eq(true)
-      end
-      it '3.3remembers entry_station' do
-        expect(card.journeys[-1][:entry]).to eq entry_station
-      end
-      it '3.4 creates a new journey' do
-        expect(card.touch_in(entry_station)).to be_an_instance_of(Journey)
+        expect(card.journeys[-1].entry_station).to eq(entry_station)
       end
     end
   end
@@ -61,14 +55,11 @@ describe Oystercard do
       card.touch_in(entry_station)
       card.touch_out(exit_station)
     end
-    it '4.0 remembers exit_station' do
-      expect(card.journeys[-1][:exit]).to eq(exit_station)
+    it '4.1 completes a journey' do
+      expect(card.journeys[-1].complete?).to eq(true)
     end
-    it '4.1 stores a journey to journeys' do
-      expect(card.journeys).to include journey
-    end
-    it '4.2 changes in_journey to false' do
-      expect(card.in_journey?).to eq(false)
+    it '4.2 updates an exit station' do
+      expect(card.journeys[-1].exit_station).to eq(exit_station)
     end
     it '4.3 deducts minimum fare' do
       expect(card.balance).to eq 10 - min_fare
