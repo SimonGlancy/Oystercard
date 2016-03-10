@@ -43,15 +43,8 @@ describe Journey do
       journey.finish(exit_station)
       expect(journey.fare).to eq min_fare
     end
-<<<<<<< HEAD
-    it 'returns a penalty fare for invalid touch-in' do
-      journey.finish(exit_station)
-      expect(journey.fare).to eq penalty_fare
-    end
-    it 'returns a penalty fare for invalid touch-out' do
-=======
+
     it '4.1 returns a penalty fare for invalid touch-out' do
->>>>>>> e1beb01d89a6baa41468e9fa010741a0c896f2b0
       journey.finish(exit_station)
       expect(journey.fare).to eq penalty_fare
     end
