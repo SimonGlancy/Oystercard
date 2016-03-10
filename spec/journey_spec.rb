@@ -6,8 +6,8 @@ describe Journey do
   penalty_fare = Journey::PENALTY_FARE
 
   subject(:journey) { described_class.new }
-  let(:entry_station) { double(:station) }
-  let(:exit_station) { double(:station) }
+  let(:entry_station) { double(:station, name: "Shoreditch", zone: 1)  }
+  let(:exit_station) { double(:station, name: "Hoxton", zone: 6) }
 
   describe '#initialize' do
     it '1.0 initializes with entry_station nil' do
@@ -33,10 +33,12 @@ describe Journey do
   end
 
   describe '#fare' do
-    it '4.0 returns a minimal fare for complete journey' do
+
+
+    it '4.0 a journey between Shoreditch and Hoxton costs £6' do
       journey.start(entry_station)
       journey.finish(exit_station)
-      expect(journey.fare).to eq min_fare
+      expect(journey.fare).to eq 6
     end
     it '4.1 returns a penalty fare for invalid touch-out' do
       journey.finish(exit_station)

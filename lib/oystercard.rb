@@ -8,7 +8,7 @@ class Oystercard
   MESSAGE1 = "Balance cannot exceed £#{MAX_BALANCE}"
   MESSAGE2 = "Need at least £#{MIN_BALANCE} to touch in"
 
-  attr_reader :balance, :journey_log_class
+  attr_reader :balance
 
   def initialize(journey_log_class: JourneyLog.new)
     @journey_log_class = journey_log_class
@@ -30,7 +30,12 @@ class Oystercard
     deduct(@journey_log_class.access_journeys.fare)
   end
 
+  def journey_log_class
+    @@journey_log_class.dup
+  end
+
   private
+
 
   def deduct(amount)
     @balance -= amount

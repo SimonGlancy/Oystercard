@@ -7,9 +7,9 @@ describe Oystercard do
   min_balance = Oystercard::MIN_BALANCE
 
   subject(:card) { described_class.new }
-  let(:entry_station) { double(:station) }
-  let(:exit_station) { double(:station) }
-  let(:journey) { double(:journey) }
+  let(:entry_station) { double(:station, name: "Shoreditch", zone: 1) }
+  let(:exit_station) { double(:station, name: "Hoxton", zone: 6 ) }
+  let(:journey) { double(:journey, entry_station: entry_station, exit_station: exit_station) }
 
   describe '#initialize' do
     it '1.0 initializes with a default balance' do
@@ -40,13 +40,10 @@ describe Oystercard do
     before(:each) do
       card.top_up(10)
       card.touch_in(entry_station)
-      card.touch_out(exit_station)
     end
-    it '4.1 completes a journey' do
-      expect(card.journey_log_class.journeys[-1].complete?).to eq(true)
-    end
-    it '4.2 updates an exit station' do
-      expect(card.journey_log_class.journeys[-1].exit_station).to eq(exit_station)
-    end
+  it "deducts the correct fare" do
+      allow(journey).to receive(:fare).and_return 6
+      expect{card.touch_out(exit_station)}.to change{card.balance}.by -journey.fare
   end
+end
 end
