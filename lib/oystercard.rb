@@ -1,3 +1,5 @@
+require_relative 'journey'
+
 class Oystercard
 
   DEFAULT_BALANCE = 0
@@ -7,7 +9,8 @@ class Oystercard
 
   attr_reader :balance, :journeys
 
-  def initialize
+  def initialize(journey_class: Journey)
+    @journey_class = journey_class
     @balance = DEFAULT_BALANCE
     @journeys = []
   end

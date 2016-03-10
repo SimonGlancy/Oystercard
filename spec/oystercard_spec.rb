@@ -13,20 +13,20 @@ describe Oystercard do
   let(:journey) { {entry: entry_station, exit: exit_station} }
 
   describe '#initialize' do
-    it 'initializes with a default balance' do
+    it '1.0 initializes with a default balance' do
       expect(card.balance).to eq(default_balance)
     end
-    it 'initializes with journeys = []' do
+    it '1.1 initializes with journeys = []' do
       expect(card.journeys).to eq([])
     end
   end
 
   describe '#top_up' do
-    it 'increases balance by a given amount' do
+    it '2.0 increases balance by a given amount' do
       amount = rand(10..50)
       expect{card.top_up(amount)}.to change{card.balance}.by(amount)
     end
-    it 'raises an error when trying to top_up above max balance' do
+    it '2.1 raises an error when trying to top_up above max balance' do
       amount = rand((max_balance - card.balance + 1)..100)
       message = "Balance cannot exceed £#{max_balance}"
       expect{card.top_up(amount)}.to raise_error message
@@ -34,20 +34,23 @@ describe Oystercard do
   end
 
   describe '#touch_in' do
-    it 'raises an error when balance is below min balance' do
+    it '3.0 raises an error when balance is below min balance' do
       message = "Need at least £#{min_balance} to touch in"
       expect{card.touch_in(entry_station)}.to raise_error message
     end
-    context 'when card is in_journey' do
+    context '3.1 when card is in_journey' do
       before(:each) do
         card.top_up(10)
         card.touch_in(entry_station)
       end
-      it 'changes in_journey to false' do
+      it '3.2 changes in_journey to false' do
         expect(card.in_journey?).to eq(true)
       end
-      it 'remembers entry_station' do
+      it '3.3remembers entry_station' do
         expect(card.journeys[-1][:entry]).to eq entry_station
+      end
+      it '3.4 creates a new journey' do
+        expect(card.touch_in(entry_station)).to be_an_instance_of(Journey)
       end
     end
   end
@@ -58,16 +61,16 @@ describe Oystercard do
       card.touch_in(entry_station)
       card.touch_out(exit_station)
     end
-    it 'remembers exit_station' do
+    it '4.0 remembers exit_station' do
       expect(card.journeys[-1][:exit]).to eq(exit_station)
     end
-    it 'stores a journey to journeys' do
+    it '4.1 stores a journey to journeys' do
       expect(card.journeys).to include journey
     end
-    it 'changes in_journey to false' do
+    it '4.2 changes in_journey to false' do
       expect(card.in_journey?).to eq(false)
     end
-    it 'deducts minimum fare' do
+    it '4.3 deducts minimum fare' do
       expect(card.balance).to eq 10 - min_fare
     end
   end
