@@ -50,6 +50,26 @@ describe Journey do
     end
   end
 
+  context 'create the fare' do
+    describe '#fare' do
+      it '5.0 sets the min fare' do
+        journey.start(entry_station)
+        journey.end(exit_station)
+        expect(journey.fare).to eq Journey::MIN_FARE
+      end
+
+      it '5.1 sets penalty fare no entry' do
+        journey.end(exit_station)
+        expect(journey.fare).to eq Journey::PENALY_FARE
+      end
+
+      it '5.2 sets penalty fare no entry' do
+        journey.start(exit_station)
+        expect(journey.fare).to eq Journey::PENALY_FARE
+      end
+    end
+  end
+
 
 
 end

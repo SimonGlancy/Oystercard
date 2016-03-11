@@ -53,7 +53,7 @@ describe Oystercard do
      card.top_up(20)
      allow(journey).to receive(:end).and_return station
      card.touch_in(station)
-     expect{ card.touch_out(station) }.to change{ card.balance }.by -Oystercard::MIN_FARE
+     expect{ card.touch_out(station) }.to change{ card.balance }.by -Journey::MIN_FARE
    end
 
    it '4.2 forgets the entry station on touch out' do
