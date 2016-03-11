@@ -3,31 +3,36 @@ class Oystercard
 
   MAX_LIMIT = 90
   MIN_LIMIT = 1
+  DEFAULT_BALANCE = 0
+  MIN_FARE = 1
+  ERROR = "Error, balance exceeds £#{MAX_LIMIT}!"
+  ERROR1 = "This card is in a journey"
+  ERROR2 = "Error insufficient funds"
 
   def initialize
-    @balance = 0
-    @journeys = Array.new
+    @balance = DEFAULT_BALANCE
+    @journeys = []
   end
 
   def top_up(amount)
-    error = "Error, balance exceeds £#{MAX_LIMIT}!"
-    raise error if (@balance + amount) > MAX_LIMIT
+    raise ERROR if (@balance + amount) > MAX_LIMIT
     @balance += amount
   end
 
   def in_journey?
-    @journeys.select { |journey| journey.key?(:out) }.empty?
+    !@journeys[-1].complete?
   end
 
   def touch_in(station)
-    fail "This card is in a journey" if in_journey?
-    fail "Error insufficient funds" if @balance < MIN_LIMIT
-    @current_journey = Journey.new(station)
+    #raise ERROR1 if in_journey?
+    raise ERROR2 if @balance < MIN_LIMIT
+    @journeys << Journey.new
+    @journeys[-1].start(station)
   end
 
   def touch_out(station)
-    deduct(3)
-    @current_journey.end_journey(station)
+    deduct(MIN_FARE)
+    @journeys[-1].end(station)
   end
 
   private

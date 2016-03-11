@@ -1,19 +1,22 @@
-require 'byebug'
+
 class Journey
 
-  attr_reader :entry_station, :journey_record
+  attr_reader :entry_station, :exit_station
 
-  def initialize(station)
-    @entry_station = station
-    @journey_record = Hash.new
+  def initialize
+    @entry_station = nil
+    @exit_station = nil
   end
 
-  def start_journey
-    @journey_record[:in] = @entry_station
+  def start(at)
+    @entry_station = at
   end
 
-  def end_journey(station)
-    @journey_record[:out] = station
+  def end(at)
+    @exit_station = at
   end
 
+  def complete?
+   !!@entry_station && !!@exit_station
+  end
 end

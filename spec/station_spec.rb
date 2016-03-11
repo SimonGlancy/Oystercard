@@ -5,10 +5,10 @@ describe Station do
 
   context 'initialization of class Station' do
     describe '#initialize' do
-      it 'exposed the station name' do
+      it '1.0 exposed the station name' do
         expect(subject.name).to eq "name"
       end
-      it 'exposed the station zone' do
+      it '1.1 exposed the station zone' do
         expect(subject.zone).to eq 1
       end
     end
